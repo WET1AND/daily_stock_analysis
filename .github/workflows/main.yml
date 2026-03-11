@@ -1,0 +1,38 @@
+name: 🇨🇳 A股每日分析 (下午6点)
+
+on:
+  schedule:
+    # UTC时间8:00，对应北京时间16:00 (周一到周五)
+    - cron: '0 8 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  run-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run CN-Stock Analysis
+        env:
+          # 读取A股专属列表
+          STOCK_LIST: ${{ vars.CN_STOCK_LIST || secrets.CN_STOCK_LIST }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # LLM 配置 (填入你实际在用的配置)
+          LLM_PROVIDER: ${{ secrets.LLM_PROVIDER || vars.LLM_PROVIDER }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL || vars.LLM_MODEL }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL || vars.LLM_BASE_URL }}
+          # 开启A股专属功能！
+          MARKET_REVIEW_ENABLED: 'true'
+          ENABLE_CHIP_DISTRIBUTION: 'true'
+        run: python main.py
