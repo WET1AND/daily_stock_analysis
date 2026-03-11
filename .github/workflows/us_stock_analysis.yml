@@ -12,7 +12,8 @@ on:
         default: 'full'
         type: choice
         options:
-          - full          
+          - full  
+          - market-only   # 仅大盘复盘
           - stocks-only   
       force_run:
         description: '强制运行（跳过交易日检查）'
