@@ -115,7 +115,7 @@ jobs:
           MODE="${{ github.event.inputs.mode || 'full' }}"
           echo "🚀 执行 美股 分析..."
           FORCE_RUN_ARG=""
-          if[ "${{ github.event.inputs.force_run }}" = "true" ]; then
+          if [ "${{ github.event.inputs.force_run }}" = "true" ]; then
             FORCE_RUN_ARG="--force-run"
           fi
           # 美股强制走无大盘复盘模式
