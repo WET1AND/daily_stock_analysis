@@ -1,0 +1,38 @@
+name: 🇺🇸 美股每日分析 (早晨6点)
+
+on:
+  schedule:
+    # UTC时间22:00，对应北京时间次日早上6:00 (通常美股交易日对应UTC周一到周五的22点)
+    - cron: '0 22 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  run-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run US-Stock Analysis
+        env:
+          # 读取美股专属列表
+          STOCK_LIST: ${{ vars.US_STOCK_LIST || secrets.US_STOCK_LIST }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # LLM 配置
+          LLM_PROVIDER: ${{ secrets.LLM_PROVIDER || vars.LLM_PROVIDER }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL || vars.LLM_MODEL }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL || vars.LLM_BASE_URL }}
+          # 关闭美股不支持的A股功能，防止报错和浪费Token！
+          MARKET_REVIEW_ENABLED: 'false'
+          ENABLE_CHIP_DISTRIBUTION: 'false'
+        run: python main.py
