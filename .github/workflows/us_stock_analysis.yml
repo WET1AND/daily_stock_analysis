@@ -58,7 +58,7 @@ jobs:
           # 读取美股专属列表，如果为空默认测苹果
           STOCK_LIST: ${{ vars.US_STOCK_LIST || secrets.US_STOCK_LIST || 'AAPL' }}
           # 强制关闭大盘复盘和筹码分布，专心分析美股！
-          MARKET_REVIEW_ENABLED: 'false'
+          MARKET_REVIEW_ENABLED: 'true'
           ENABLE_CHIP_DISTRIBUTION: 'false'
           
           # === AI 配置 ===
