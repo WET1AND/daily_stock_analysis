@@ -298,13 +298,13 @@ jobs:
             echo "⚡ 已启用强制运行模式（跳过交易日检查）"
           fi
           
-          # 执行A股分析
+          # 执行A股分析 - 使用正确的参数
           if [ "$MODE" = "market-only" ]; then
-            python main.py --market-review --market cn $FORCE_RUN_ARG
+            python main.py --market-review $FORCE_RUN_ARG
           elif [ "$MODE" = "stocks-only" ]; then
-            python main.py --no-market-review --market cn $FORCE_RUN_ARG
+            python main.py --no-market-review $FORCE_RUN_ARG
           else
-            python main.py --market cn $FORCE_RUN_ARG
+            python main.py $FORCE_RUN_ARG
           fi
       
       - name: 上传A股报告
@@ -606,13 +606,13 @@ jobs:
             echo "⚡ 已启用强制运行模式（跳过交易日检查）"
           fi
           
-          # 执行美股分析
+          # 执行美股分析 - 使用正确的参数
           if [ "$MODE" = "market-only" ]; then
-            python main.py --market-review --market us $FORCE_RUN_ARG
+            python main.py --market-review $FORCE_RUN_ARG
           elif [ "$MODE" = "stocks-only" ]; then
-            python main.py --no-market-review --market us $FORCE_RUN_ARG
+            python main.py --no-market-review $FORCE_RUN_ARG
           else
-            python main.py --market us $FORCE_RUN_ARG
+            python main.py $FORCE_RUN_ARG
           fi
       
       - name: 上传美股报告
